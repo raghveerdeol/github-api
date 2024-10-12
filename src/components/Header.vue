@@ -9,9 +9,18 @@ export default {
             store,
             selectedEndpoint: '',
             valueInput: '',
+            errorInput: '',
         }
     },
     methods: {
+        validation() {
+            if (this.valueInput.length < 3 ) {
+                this.errorInput = 'The input must be at least 3 characters';
+            } else {
+                this.getRepos(this.githubApi, this.selectedEndpoint, this.valueInput);
+                this.errorInput = '';
+            }
+        },
         getRepos(api, endpoint, name) {
             axios.get(api + endpoint, {
                 params: {
@@ -42,7 +51,7 @@ export default {
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <div class="row">
-                <form class="d-flex col-12" role="search" @submit.prevent="getRepos(this.githubApi, this.selectedEndpoint, this.valueInput)" >
+                <form class="d-flex col-12" role="search" @submit.prevent="validation()" >
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search" v-model="valueInput">
                     <select class="form-select" aria-label="Default select example" v-model="selectedEndpoint">
                         <option value="users" selected >User</option>
@@ -52,6 +61,9 @@ export default {
                 </form>
             </div>
         </div>
+        <span>
+            {{ errorInput }}
+        </span>
     </nav>
 
 </template>
