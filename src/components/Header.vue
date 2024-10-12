@@ -5,14 +5,14 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            githubApi: 'https://api.github.com/search/repositories',
+            githubApi: 'https://api.github.com/search/',
             store,
             valueInput: '',
         }
     },
     methods: {
-        getRepos(api, name) {
-            axios.get(api, {
+        getRepos(api, endpoint, name) {
+            axios.get(api + endpoint, {
                 params: {
                     q: name,
                     per_page: 30,
@@ -39,10 +39,16 @@ export default {
 <template>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
-            <form class="d-flex" role="search" @submit.prevent="getRepos(this.githubApi, this.valueInput)" >
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search" v-model="valueInput">
-                <button class="btn btn-outline-success">Search</button>
-            </form>
+            <div class="row">
+                <form class="d-flex col-12" role="search" @submit.prevent="getRepos(this.githubApi, this.store.selectedEndpoint, this.valueInput)" >
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search" v-model="valueInput">
+                    <select class="form-select" aria-label="Default select example" v-model="store.selectedEndpoint">
+                        <option value="users" selected >User</option>
+                        <option value="repositories">Repository</option>
+                    </select>
+                    <button class="btn btn-outline-success">Search</button>
+                </form>
+            </div>
         </div>
     </nav>
 

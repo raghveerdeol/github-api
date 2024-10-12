@@ -12,7 +12,7 @@ export default {
 
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row" v-if="store.selectedEndpoint === 'repositories'">
             <div class="card col-3" style="width: 18rem;"  v-for="repository in store.repositories">
                 <img :src="repository.owner.avatar_url" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -22,6 +22,17 @@ export default {
                     <p><em> {{ repository.created_at }} </em></p>
                     <p>Visibility:<em> {{ repository.visibility }} </em></p>
                     <a :href="repository.html_url" class="btn btn-primary" target="_blank" rel="noopener noreferrer" >Go to repository</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" v-if="store.selectedEndpoint === 'users'">
+            <div class="card col-3" style="width: 18rem;"  v-for="repository in store.repositories">
+                <img :src="repository.avatar_url" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"> {{ repository.login }} </h5>
+                    <h6 class="card-title">Id: <em> {{ repository.id }} </em></h6>
+                    <a :href="repository.html_url" class="btn btn-primary" target="_blank" rel="noopener noreferrer" >Go to user</a>
                 </div>
             </div>
         </div>
