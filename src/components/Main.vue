@@ -26,14 +26,20 @@ export default {
             </div>
         </div>
 
-        <div class="row" v-else>
-            <div class="card col-3" style="width: 18rem;"  v-for="repository in store.repositories">
-                <img :src="repository.avatar_url" class="card-img-top" alt="...">
+        <div class="row" v-if="store.selection === 'users'">
+            <div class="card col-3" style="width: 18rem;"  v-for="user in store.users">
+                <img :src="user.avatar_url" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title"> {{ repository.login }} </h5>
-                    <h6 class="card-title">Id: <em> {{ repository.id }} </em></h6>
-                    <a :href="repository.html_url" class="btn btn-primary" target="_blank" rel="noopener noreferrer" >Go to user</a>
+                    <h5 class="card-title"> {{ user.login }} </h5>
+                    <h6 class="card-title">Id: <em> {{ user.id }} </em></h6>
+                    <a :href="user.html_url" class="btn btn-primary" target="_blank" rel="noopener noreferrer" >Go to user</a>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-10">
+                {{ store.message }}
             </div>
         </div>
     </div>

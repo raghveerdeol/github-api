@@ -17,6 +17,8 @@ export default {
             if (this.valueInput.length < 3 ) {
                 this.errorInput = 'The input must be at least 3 characters';
             } else {
+                this.store.repositories = {};
+                this.store.users = {};
                 this.getRepos(this.githubApi, this.selectedEndpoint, this.valueInput);
                 this.errorInput = '';
             }
@@ -29,9 +31,21 @@ export default {
                 }
             })
                 .then((response) => {
-                    this.store.repositories = response.data.items;
                     this.store.selection = endpoint;
-                    console.log(this.store.repositories);
+
+                    if (endpoint === 'users' && response.data.items.length > 0) {
+                        this.store.users = response.data.items;
+                        console.log(this.store.users);
+                    } else if (endpoint === 'users' && response.data.items.length === 0) {
+                        this.store.message = 'The user does not existe';
+                        console.log(this.store.users);
+                    } else if (endpoint === 'repositories' && response.data.items.length > 0){
+                        this.store.repositories = response.data.items;
+                        console.log(this.store.repositories);
+                    } else if (endpoint === 'repositories' && response.data.items.length === 0) {
+                        this.store.message = 'The repository des not existe';
+                        console.log(this.store.repositories);
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
