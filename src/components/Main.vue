@@ -12,7 +12,7 @@ export default {
 
 <template>
     <div class="container-fluid">
-        <div class="row" v-if="store.selectedEndpoint === 'repositories'">
+        <div class="row" v-if="store.selection === 'repositories'">
             <div class="card col-3" style="width: 18rem;"  v-for="repository in store.repositories">
                 <img :src="repository.owner.avatar_url" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -26,7 +26,7 @@ export default {
             </div>
         </div>
 
-        <div class="row" v-if="store.selectedEndpoint === 'users'">
+        <div class="row" v-else>
             <div class="card col-3" style="width: 18rem;"  v-for="repository in store.repositories">
                 <img :src="repository.avatar_url" class="card-img-top" alt="...">
                 <div class="card-body">

@@ -7,6 +7,7 @@ export default {
         return {
             githubApi: 'https://api.github.com/search/',
             store,
+            selectedEndpoint: '',
             valueInput: '',
         }
     },
@@ -20,6 +21,7 @@ export default {
             })
                 .then((response) => {
                     this.store.repositories = response.data.items;
+                    this.store.selection = endpoint;
                     console.log(this.store.repositories);
                 })
                 .catch(function (error) {
@@ -40,9 +42,9 @@ export default {
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <div class="row">
-                <form class="d-flex col-12" role="search" @submit.prevent="getRepos(this.githubApi, this.store.selectedEndpoint, this.valueInput)" >
+                <form class="d-flex col-12" role="search" @submit.prevent="getRepos(this.githubApi, this.selectedEndpoint, this.valueInput)" >
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search" v-model="valueInput">
-                    <select class="form-select" aria-label="Default select example" v-model="store.selectedEndpoint">
+                    <select class="form-select" aria-label="Default select example" v-model="selectedEndpoint">
                         <option value="users" selected >User</option>
                         <option value="repositories">Repository</option>
                     </select>
