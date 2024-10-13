@@ -10,6 +10,7 @@ export default {
             selectedEndpoint: '',
             valueInput: '',
             errorInput: '',
+            timeout: null,
         }
     },
     methods: {
@@ -64,7 +65,13 @@ export default {
                 .finally(function () {
                     // always executed
                 });
-        }
+        },
+        debounce(){
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                this.validation();
+            }, 700);
+        },
     },
     // created() {
     //     this.getRepos(this.githubApi, this.valueInput);
@@ -77,8 +84,8 @@ export default {
         <div class="container-fluid">
             <div class="row">
                 <form class="d-flex col-12" role="search" @submit.prevent="validation()" >
-                    <input class="form-control me-4" type="search" placeholder="Search" aria-label="Search" id="search" v-model="valueInput">
-                    <select class="form-select me-4" aria-label="Default select example" v-model="selectedEndpoint">
+                    <input class="form-control me-4" type="search" placeholder="Search" aria-label="Search" id="search" v-model="valueInput" @input="valueInput.trim() ? debounce() : ''">
+                    <select class="form-select me-4" aria-label="Default select example" v-model="selectedEndpoint" required>
                         <option value="users" selected >User</option>
                         <option value="repositories">Repository</option>
                     </select>
