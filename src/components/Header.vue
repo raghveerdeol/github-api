@@ -22,6 +22,9 @@ export default {
                 this.store.users = {};
                 this.errorInput = '';
                 this.startLoader();
+                if (this.selectedEndpoint === '') {
+                    this.selectedEndpoint = 'users';
+                }
                 this.getRepos(this.githubApi, this.selectedEndpoint, this.valueInput);
             }
         },
