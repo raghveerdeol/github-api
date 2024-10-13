@@ -11,9 +11,13 @@ export default {
 </script>
 
 <template>
+    <div :class=" store.loader === 'active' ? 'active' : 'inactive' ">
+        <div class="loader"></div>
+    </div>
+
     <div class="container-fluid">
-        <div class="row" v-if="store.selection === 'repositories'">
-            <div class="card col-3" style="width: 18rem;"  v-for="repository in store.repositories">
+        <div class="row mt-4" v-if="store.selection === 'repositories'">
+            <div class="card col-3 p-3 m-2" style="width: 18rem;"  v-for="repository in store.repositories">
                 <img :src="repository.owner.avatar_url" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"> {{ repository.name }} </h5>
@@ -26,8 +30,8 @@ export default {
             </div>
         </div>
 
-        <div class="row" v-if="store.selection === 'users'">
-            <div class="card col-3" style="width: 18rem;"  v-for="user in store.users">
+        <div class="row mt-4" v-if="store.selection === 'users'">
+            <div class="card col-3 p-3 m-2" style="width: 18rem;"  v-for="user in store.users">
                 <img :src="user.avatar_url" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title"> {{ user.login }} </h5>
@@ -45,4 +49,58 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.active{
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+}
+.inactive{
+    display:none
+}
+/* HTML: <div class="loader"></div> */
+.loader {
+    font-weight: bold;
+    font-family: monospace;
+    display: inline-grid;
+    font-size: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+.loader:before,
+.loader:after {
+    content:"Loading...";
+    grid-area: 1/1;
+    -webkit-mask-size: 100% 5px,100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: l35-1 1s infinite;
+}
+.loader:before {
+    -webkit-mask-image:
+    linear-gradient(#000 0 0),
+    linear-gradient(#000 0 0);
+}
+.loader:after {
+    -webkit-mask-image:
+        linear-gradient(#000 0 0);
+    animation:
+        l35-1  1s infinite,
+        l35-2 .2s infinite cubic-bezier(0.5,200,0.5,-200);
+}
+
+@keyframes l35-1{
+    0%   {-webkit-mask-position:0 20px,0 0}
+    20%  {-webkit-mask-position:0 8px ,0 0}
+    40%  {-webkit-mask-position:0 100%,0 0}
+    60%  {-webkit-mask-position:0 3px ,0 0}
+    80%  {-webkit-mask-position:0 15px,0 0}
+    100% {-webkit-mask-position:0 0   ,0 0}
+}
+@keyframes l35-2{
+    100% {transform:translate(0.1px)} 
+}
+</style>

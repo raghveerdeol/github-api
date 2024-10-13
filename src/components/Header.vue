@@ -19,9 +19,16 @@ export default {
             } else {
                 this.store.repositories = {};
                 this.store.users = {};
-                this.getRepos(this.githubApi, this.selectedEndpoint, this.valueInput);
                 this.errorInput = '';
+                this.startLoader();
+                this.getRepos(this.githubApi, this.selectedEndpoint, this.valueInput);
             }
+        },
+        startLoader() {
+            this.store.loader = 'active';
+        },
+        endLoader() {
+            this.store.loader = 'inactive'
         },
         getRepos(api, endpoint, name) {
             axios.get(api + endpoint, {
@@ -35,15 +42,19 @@ export default {
 
                     if (endpoint === 'users' && response.data.items.length > 0) {
                         this.store.users = response.data.items;
+                        this.endLoader();
                         console.log(this.store.users);
                     } else if (endpoint === 'users' && response.data.items.length === 0) {
                         this.store.message = 'The user does not existe';
+                        this.endLoader();
                         console.log(this.store.users);
                     } else if (endpoint === 'repositories' && response.data.items.length > 0){
                         this.store.repositories = response.data.items;
+                        this.endLoader();
                         console.log(this.store.repositories);
                     } else if (endpoint === 'repositories' && response.data.items.length === 0) {
                         this.store.message = 'The repository des not existe';
+                        this.endLoader();
                         console.log(this.store.repositories);
                     }
                 })
@@ -66,8 +77,8 @@ export default {
         <div class="container-fluid">
             <div class="row">
                 <form class="d-flex col-12" role="search" @submit.prevent="validation()" >
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="search" v-model="valueInput">
-                    <select class="form-select" aria-label="Default select example" v-model="selectedEndpoint">
+                    <input class="form-control me-4" type="search" placeholder="Search" aria-label="Search" id="search" v-model="valueInput">
+                    <select class="form-select me-4" aria-label="Default select example" v-model="selectedEndpoint">
                         <option value="users" selected >User</option>
                         <option value="repositories">Repository</option>
                     </select>

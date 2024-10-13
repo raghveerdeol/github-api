@@ -5,4 +5,5 @@ import { reactive } from "vue";
         selection: '',
         users: {},
         message: '',
+        loader: '',
     })
